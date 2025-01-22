@@ -24,7 +24,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          file: ./YouTubeThumbnailFixer/Dockerfile
+          context: ./YouTubeThumbnailFixer/
           push: true
           tags: |
             alexinabox/yttf:latest
