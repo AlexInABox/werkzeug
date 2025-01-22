@@ -26,4 +26,4 @@ jobs:
         with:
           push: true
           tags: |
-            alexinabox/YouTubeThumbnailFixer:latest
+            alexinabox/yttf:latest
