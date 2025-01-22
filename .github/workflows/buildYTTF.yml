@@ -1,4 +1,4 @@
-name: [YouTubeThumbnailFixer] Docker Image CI - main
+name: "[YouTubeThumbnailFixer] Docker Image CI - main"
 
 on:
   push:
