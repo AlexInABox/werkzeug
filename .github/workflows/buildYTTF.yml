@@ -1,4 +1,4 @@
-name: [YouTubeThumbnailFixer] Docker Image CI - main
+name: "[YouTubeThumbnailFixer] Docker Image CI - main"
 
 on:
   push:
@@ -22,8 +22,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
+          context: "{{defaultContext}}:YouTubeThumbnailFixer"
           push: true
           tags: |
-            alexinabox/YouTubeThumbnailFixer:latest
+            alexinabox/yttf:latest
