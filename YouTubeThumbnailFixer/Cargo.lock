@@ -4,12 +4,13 @@ version = 4
 
 [[package]]
 name = "YouTubeThumbnailFixer"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "actix-web",
  "image",
  "regex",
  "reqwest",
+ "serde",
 ]
 
 [[package]]

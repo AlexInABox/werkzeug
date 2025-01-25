@@ -1,21 +1,30 @@
 use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 use image::{DynamicImage, ImageFormat};
 use std::io::Cursor;
+use actix_web::web::Query;
 use regex::Regex;
 use reqwest::Client;
+use serde::Deserialize;
 
 #[get("/healthcheck")]
 async fn echo() -> impl Responder {
     HttpResponse::Ok()
 }
 
+#[derive(Deserialize)]
+struct ThumbnailQuery {
+    url: String,
+}
+
 #[get("/")]
-async fn youtube_thumbnail_cropper(req_body: String) -> impl Responder {
-    println!("Cropping thumbnail: {}", req_body);
+async fn youtube_thumbnail_cropper(query: Query<ThumbnailQuery>) -> impl Responder {
+    let url = &query.url; // Access the "url" parameter directly
+    println!("Cropping thumbnail: {}", url);
+
     let re = Regex::new(r"(?:[?&]v=|/embed/|/1/|/v/|https://(?:www\.)?youtu\.be/)([^&\n?#]+)").unwrap();
     // Use captures_iter to extract capture groups
     let video_id = re
-        .captures_iter(&req_body)
+        .captures_iter(&url)
         .filter_map(|cap| cap.get(1)) // Get capture group 1 if it exists
         .map(|m| m.as_str())
         .next(); // Get the first match (if any)
