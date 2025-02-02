@@ -75,7 +75,7 @@ async fn main() -> std::io::Result<()> {
             .service(echo)
             .service(youtube_thumbnail_cropper)
     })
-        .bind(("0.0.0.0", 3001))?
+        .bind(("0.0.0.0", 3000))?
         .run()
         .await
 }
