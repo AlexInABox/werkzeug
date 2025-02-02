@@ -34,6 +34,20 @@ async fn youtube_thumbnail_cropper(query: Query<ThumbnailQuery>) -> impl Respond
     }
 
     let client = Client::new();
+    let response = client.get(format!("https://img.youtube.com/vi/{}/maxresdefault.jpg", video_id.unwrap().to_string()))
+        .send()
+        .await
+        .unwrap()
+        .bytes()
+        .await
+        .unwrap();
+    let img: DynamicImage = image::load_from_memory(&response).unwrap();
+    if img.width() == 1280 || img.height() == 720 {
+        let cropped_img = img.crop_imm(280, 0, 720, 720);
+
+        return HttpResponse::Ok().content_type("image/png").body(convert_image_to_buffer(cropped_img, ImageFormat::Png));
+    }
+
     let response = client.get(format!("https://img.youtube.com/vi/{}/0.jpg", video_id.unwrap().to_string()))
         .send()
         .await
@@ -41,9 +55,7 @@ async fn youtube_thumbnail_cropper(query: Query<ThumbnailQuery>) -> impl Respond
         .bytes()
         .await
         .unwrap();
-
     let img: DynamicImage = image::load_from_memory(&response).unwrap();
-
     let cropped_img = img.crop_imm(105, 45, 270, 270);
 
     HttpResponse::Ok().content_type("image/png").body(convert_image_to_buffer(cropped_img, ImageFormat::Png))
@@ -63,7 +75,7 @@ async fn main() -> std::io::Result<()> {
             .service(echo)
             .service(youtube_thumbnail_cropper)
     })
-        .bind(("0.0.0.0", 3000))?
+        .bind(("0.0.0.0", 3001))?
         .run()
         .await
 }
