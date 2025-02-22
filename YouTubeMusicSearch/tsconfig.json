@@ -4,8 +4,9 @@
         "target": "ESNext",
         "moduleResolution": "node10",
         "allowSyntheticDefaultImports": true,
+        "outDir": "./dist"
     },
     "files": [
         "./index.ts"
-    ]
+    ],
 }
