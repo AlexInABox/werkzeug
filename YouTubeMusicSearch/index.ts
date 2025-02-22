@@ -16,7 +16,7 @@ const app = express();
 app.use(limiter);
 
 interface SearchResult {
-    videoId: string;
+    id: string;
     title: string;
     artist: string;
 }
@@ -39,7 +39,7 @@ app.get('/search', async (req: Request, res: Response) => {
     search.songs.contents.forEach(song => {
         if (song.id && song.title) {
             listOfSearchResults.push({
-                videoId: song.id,
+                id: song.id,
                 title: song.title,
                 artist: getArtistName(song)
             });
