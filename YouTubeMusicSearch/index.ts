@@ -15,6 +15,12 @@ const limiter = rateLimit({
 const app = express();
 app.use(limiter);
 
+interface SearchResult {
+    videoId: string;
+    title: string;
+    artist: string;
+}
+
 app.get('/search', async (req: Request, res: Response) => {
 
     if (!req.query.title) {
@@ -24,12 +30,23 @@ app.get('/search', async (req: Request, res: Response) => {
 
     const query = req.query.title as string;
     const search = await yt.music.search(query, { type: 'song' });
-    if (!search.songs.title) {
+    if (search.songs.contents.length == 0) {
         res.status(404).send('No songs found');
         return;
     }
-    const songIds = search.songs.contents.map(song => song.id);
-    res.json(songIds);
+
+    let listOfSearchResults: SearchResult[] = [];
+    search.songs.contents.forEach(song => {
+        if (song.id && song.title) {
+            listOfSearchResults.push({
+                videoId: song.id,
+                title: song.title,
+                artist: getArtistName(song)
+            });
+        }
+    });
+
+    res.json(listOfSearchResults);
 });
 
 app.use((req: Request, res: Response) => {
@@ -39,3 +56,15 @@ app.use((req: Request, res: Response) => {
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
+
+
+function getArtistName(song: {
+    author?: { name?: string } | null;
+    authors?: { name?: string }[] | null;
+    artists?: { name?: string }[] | null;
+}): string {
+    if (song.author?.name) return song.author.name;
+    if (song.authors?.length && song.authors[0]?.name) return song.authors[0].name;
+    if (song.artists?.length && song.artists[0]?.name) return song.artists[0].name;
+    return "Unknown Artist";
+}
