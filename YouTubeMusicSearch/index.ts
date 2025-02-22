@@ -13,6 +13,7 @@ const limiter = rateLimit({
 })
 
 const app = express();
+app.set('trust proxy', 2); // Trust two levels of proxies (Cloudflare & Nginx)
 app.use(limiter);
 
 interface SearchResult {
