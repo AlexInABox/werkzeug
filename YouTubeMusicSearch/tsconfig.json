@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "ESNext",
+        "moduleResolution": "node10",
+        "allowSyntheticDefaultImports": true,
+    },
+    "files": [
+        "./index.ts"
+    ]
+}

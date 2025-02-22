@@ -1,9 +1,9 @@
-name: "[YouTubeThumbnailFixer] Docker Image CI - main"
+name: "[YouTubeMusicSearch] Docker Image CI - main"
 
 on:
   push:
     branches: [ "main" ]
-    paths: [ 'YouTubeThumbnailFixer/**' ]
+    paths: [ 'YouTubeMusicSearch/**' ]
 
 jobs:
   docker:
@@ -25,7 +25,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: "{{defaultContext}}:YouTubeThumbnailFixer"
+          context: "{{defaultContext}}:YouTubeMusicSearch"
           push: true
           tags: |
-            alexinabox/yttf:latest
+            alexinabox/ytms:latest
